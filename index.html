@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trivia Torre Eiffel</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+      color: #222;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .app {
+      max-width: 480px;
+      width: 100%;
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .title {
+      text-align: center;
+      margin-bottom: 12px;
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 16px;
+    }
+    .progress {
+      font-size: 0.85rem;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    .question-card {
+      margin-bottom: 16px;
+    }
+    .question-text {
+      font-size: 1.05rem;
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .option-btn {
+      border: 1px solid #ddd;
+      border-radius: 999px;
+      padding: 10px 14px;
+      text-align: left;
+      background: #fafafa;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.08s, border-color 0.15s;
+    }
+    .option-btn:active {
+      transform: scale(0.98);
+    }
+    .option-btn.correct {
+      background: #e3f8e5;
+      border-color: #46b96f;
+    }
+    .option-btn.incorrect {
+      background: #fde4e4;
+      border-color: #e65b5b;
+    }
+    .option-btn.disabled {
+      cursor: default;
+      opacity: 0.9;
+    }
+    .feedback {
+      min-height: 20px;
+      margin-top: 8px;
+      font-size: 0.9rem;
+    }
+    .feedback.correct {
+      color: #2f8c4c;
+    }
+    .feedback.incorrect {
+      color: #c0392b;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 16px;
+      gap: 8px;
+    }
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      background: #222;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .btn.secondary {
+      background: #eee;
+      color: #333;
+    }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+    .score {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 1rem;
+    }
+    .badge {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 4px 10px;
+      font-size: 0.8rem;
+      background: #eee;
+      margin-top: 6px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="title">Trivia Torre Eiffel</div>
+    <div class="subtitle">¿Cuánto sabés del ícono de París?</div>
+
+    <div class="progress" id="progress"></div>
+
+    <div class="question-card">
+      <div class="question-text" id="questionText"></div>
+      <div class="options" id="optionsContainer"></div>
+      <div class="feedback" id="feedback"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn secondary" id="restartBtn" style="display:none;">Reiniciar</button>
+      <button class="btn" id="nextBtn" disabled>Siguiente</button>
+    </div>
+
+    <div class="score" id="scoreBox" style="display:none;"></div>
+  </div>
+
+  <script>
+    const questions = [
+      // Nivel 1 - Fácil
+      {
+        text: "¿En qué ciudad está la Torre Eiffel?",
+        options: ["Londres","París","Roma","Berlín"],
+        correctIndex: 1
+      },
+      {
+        text: "¿Para qué evento se construyó la Torre Eiffel?",
+        options: [
+          "Juegos Olímpicos",
+          "Exposición Universal de 1889",
+          "Revolución Francesa",
+          "Coronación de Napoleón"
+        ],
+        correctIndex: 1
+      },
+      {
+        text: "¿Quién fue el responsable principal del proyecto?",
+        options: ["Leonardo Da Vinci","Gustave Eiffel","Víctor Hugo","Claude Monet"],
+        correctIndex: 1
+      },
+      {
+        text: "¿Cuántos metros mide aproximadamente la Torre Eiffel?",
+        options: ["100 m","220 m","330 m","500 m"],
+        correctIndex: 2
+      },
+      {
+        text: "¿Iba a ser una estructura permanente?",
+        options: [
+          "Sí",
+          "Nunca estuvo planeado desmontarla",
+          "No, estaba prevista solo por 20 años",
+          "Solo si ganaba Napoleón"
+        ],
+        correctIndex: 2
+      },
+      // Nivel 2 - Medio
+      {
+        text: "¿Qué ayudó a que no la desmontaran?",
+        options: [
+          "Se convirtió en prisión",
+          "Se usó como antena de comunicaciones",
+          "La Reina de Inglaterra la compró",
+          "Firmaron una petición online"
+        ],
+        correctIndex: 1
+      },
+      {
+        text: "¿Cuántos pisos visitables tiene?",
+        options: ["1","2","3","5"],
+        correctIndex: 2
+      },
+      {
+        text: "¿Cada cuánto \"parpadea\" con luces centelleantes durante la noche?",
+        options: ["Cada 15 minutos","Cada media hora","Cada hora","Solo Navidad"],
+        correctIndex: 2
+      },
+      {
+        text: "¿Qué opinaban muchos parisinos cuando se construyó?",
+        options: [
+          "La amaban",
+          "Les era indiferente",
+          "La odiaban",
+          "La querían más alta"
+        ],
+        correctIndex: 2
+      },
+      {
+        text: "¿Cuánto pesa aproximadamente la Torre Eiffel?",
+        options: ["1.000 toneladas","7.000 toneladas","50.000 toneladas","No pesa, es mágica"],
+        correctIndex: 1
+      },
+      // Nivel 3 - Difícil
+      {
+        text: "¿Cada cuántos años se repinta la Torre Eiffel?",
+        options: ["Cada 2","Cada 5","Cada 7","Nunca"],
+        correctIndex: 2
+      },
+      {
+        text: "¿Cuánto tiempo se tardó en construirla?",
+        options: ["6 meses","2 años y 2 meses","10 años","1 año exacto"],
+        correctIndex: 1
+      },
+      {
+        text: "¿Qué parte de la torre se usa para la transmisión y aumenta su altura actual?",
+        options: ["El pilar norte","La punta antena","Las escaleras","El restaurante"],
+        correctIndex: 1
+      },
+      {
+        text: "¿Qué curiosidad tiene el color de la Torre Eiffel?",
+        options: [
+          "Cambia según estación",
+          "Fue rosa una vez",
+          "Tiene un “color oficial”: Marrón Eiffel",
+          "La pintan con pincel"
+        ],
+        correctIndex: 2
+      },
+      {
+        text: "¿Qué récord tuvo la Torre Eiffel cuando se inauguró?",
+        options: [
+          "Mayor monumento de hierro",
+          "Construcción más fotografiada",
+          "Edificio más alto del mundo",
+          "Primer monumento iluminado"
+        ],
+        correctIndex: 2
+      }
+    ];
+
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    const questionText = document.getElementById("questionText");
+    const optionsContainer = document.getElementById("optionsContainer");
+    const feedback = document.getElementById("feedback");
+    const progress = document.getElementById("progress");
+    const nextBtn = document.getElementById("nextBtn");
+    const restartBtn = document.getElementById("restartBtn");
+    const scoreBox = document.getElementById("scoreBox");
+
+    function loadQuestion() {
+      const q = questions[currentIndex];
+      questionText.textContent = q.text;
+      progress.textContent = Pregunta ${currentIndex + 1} de ${questions.length};
+      optionsContainer.innerHTML = "";
+      feedback.textContent = "";
+      feedback.className = "feedback";
+      nextBtn.disabled = true;
+      answered = false;
+
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement("button");
+        btn.className = "option-btn";
+        btn.textContent = String.fromCharCode(65 + idx) + ") " + opt;
+        btn.addEventListener("click", () => handleAnswer(idx, btn));
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function handleAnswer(selectedIndex, btnClicked) {
+      if (answered) return;
+      answered = true;
+
+      const q = questions[currentIndex];
+      const optionButtons = optionsContainer.querySelectorAll(".option-btn");
+
+      optionButtons.forEach((btn, idx) => {
+        btn.classList.add("disabled");
+        if (idx === q.correctIndex) {
+          btn.classList.add("correct");
+        }
+        if (idx === selectedIndex && idx !== q.correctIndex) {
+          btn.classList.add("incorrect");
+        }
+      });
+
+      if (selectedIndex === q.correctIndex) {
+        score++;
+        feedback.textContent = "✅ ¡Correcto!";
+        feedback.classList.add("correct");
+      } else {
+        feedback.textContent = "❌ Incorrecto";
+        feedback.classList.add("incorrect");
+      }
+
+      nextBtn.disabled = false;
+    }
+
+    function showFinalScore() {
+      questionText.textContent = "¡Trivia completada!";
+      optionsContainer.innerHTML = "";
+      feedback.textContent = "";
+      feedback.className = "feedback";
+      nextBtn.style.display = "none";
+      restartBtn.style.display = "inline-block";
+      scoreBox.style.display = "block";
+
+      const total = questions.length;
+      const percentage = Math.round((score / total) * 100);
+
+      let title;
+      if (score <= 5) {
+        title = "Turista casual";
+      } else if (score <= 10) {
+        title = "Buen observador";
+      } else if (score <= 13) {
+        title = "Experto parisino";
+      } else {
+        title = "¡Maestro de la Torre Eiffel!";
+      }
+
+      scoreBox.innerHTML = `
+        Obtuviste <strong>${score}</strong> de <strong>${total}</strong> (${percentage}%)
+        <div class="badge">${title}</div>
+      `;
+      progress.textContent = "";
+    }
+
+    nextBtn.addEventListener("click", () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        loadQuestion();
+      } else {
+        showFinalScore();
+      }
+    });
+
+    restartBtn.addEventListener("click", () => {
+      currentIndex = 0;
+      score = 0;
+      nextBtn.style.display = "inline-block";
+      restartBtn.style.display = "none";
+      scoreBox.style.display = "none";
+      loadQuestion();
+    });
+
+    // Inicial
+    loadQuestion();
+  </script>
+</body>
+</html>
