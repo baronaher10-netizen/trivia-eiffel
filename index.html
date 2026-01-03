@@ -86,6 +86,38 @@
       margin-top: 14px;
       font-weight: 600;
     }
+    /* ===== ESTILO BONUS ===== */
+.app.bonus {
+  outline: 2px solid #ffcc66;
+  box-shadow: 0 14px 30px rgba(0,0,0,0.22);
+}
+    /* ===== VISTOSO: etiqueta BONUS + animación ===== */
+  #sectionLabel {
+  display: none;
+  margin: 10px auto 12px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  border: 1px solid #e6e6e6;
+  background: linear-gradient(90deg, #fff3c4, #ffe7d6);
+  color: #222;
+  font-weight: 800;
+  letter-spacing: 0.2px;
+  width: fit-content;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  transform: translateY(-2px);
+  animation: pop 260ms ease-out;
+}
+
+@keyframes pop {
+  from { transform: translateY(-8px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(-2px) scale(1);    opacity: 1; }
+}
+
+/* Marca visual cuando estás en BONUS (cambia borde del card) */
+.app.bonus {
+  outline: 2px solid rgba(255, 200, 90, 0.85);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
   </style>
 </head>
 
@@ -219,9 +251,11 @@
       const restartBtn = document.getElementById("restartBtn");
       const scoreBox = document.getElementById("scoreBox");
       const progress = document.getElementById("progress");
-
+      const appEl = document.querySelector(".app");
+      
       function showQuestion() {
         const q = questions[index];
+        if (appEl) appEl.classList.toggle("bonus", index >= 10);
         progress.textContent = `Pregunta ${index + 1} de ${questions.length}`;
         qText.textContent = q.text;
         options.innerHTML = "";
