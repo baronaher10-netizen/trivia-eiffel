@@ -260,6 +260,9 @@
         const sectionLabel = document.getElementById("sectionLabel");
         const q = questions[index];
         if (appEl) appEl.classList.toggle("bonus", index >= 10);
+        if (sectionLabel) {
+  sectionLabel.style.display = index >= 10 ? "block" : "none";
+}
         progress.textContent = `Pregunta ${index + 1} de ${questions.length}`;
         qText.textContent = q.text;
         options.innerHTML = "";
