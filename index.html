@@ -94,6 +94,11 @@
     <h1>Trivia Torre Eiffel</h1>
     <div class="subtitle">¿Cuánto sabés del ícono de París?</div>
 
+    <!-- Rótulo BONUS (se muestra desde la pregunta 11) -->
+    <div id="sectionLabel" style="display:none; margin-bottom:10px; font-weight:700; color:#444;">
+      ⭐ BONUS PARÍS (5 preguntas)
+    </div>
+
     <div class="progress" id="progress"></div>
     <div class="question" id="questionText">Tocá “Comenzar” para iniciar</div>
 
@@ -113,101 +118,96 @@
 
       const questions = [
 
-  // ===== TORRE EIFFEL (10) =====
-  {
-    text: "¿En qué ciudad está la Torre Eiffel?",
-    options: ["Londres", "París", "Roma", "Berlín"],
-    correct: 1
-  },
-  {
-    text: "¿Para qué evento se construyó la Torre Eiffel?",
-    options: [
-      "Juegos Olímpicos",
-      "Exposición Universal de 1889",
-      "Revolución Francesa",
-      "Coronación de Napoleón"
-    ],
-    correct: 1
-  },
-  {
-    text: "¿Quién fue el ingeniero responsable del proyecto?",
-    options: ["Gustave Eiffel", "Victor Hugo", "Le Corbusier", "Claude Monet"],
-    correct: 0
-  },
-  {
-    text: "¿Cuántos metros mide aproximadamente la Torre Eiffel?",
-    options: ["150 m", "220 m", "330 m", "500 m"],
-    correct: 2
-  },
-  {
-    text: "¿En qué año se inauguró la Torre Eiffel?",
-    options: ["1789", "1850", "1889", "1905"],
-    correct: 2
-  },
-  {
-    text: "¿De qué material está hecha principalmente?",
-    options: ["Acero", "Hierro", "Aluminio", "Cemento"],
-    correct: 1
-  },
-  {
-    text: "¿Cuántos niveles visitables tiene la Torre Eiffel?",
-    options: ["1", "2", "3", "4"],
-    correct: 2
-  },
-  {
-    text: "¿Cada cuántos años se repinta aproximadamente?",
-    options: ["5 años", "7 años", "10 años", "15 años"],
-    correct: 1
-  },
-  {
-    text: "¿Qué color tiene oficialmente la Torre Eiffel?",
-    options: ["Negro", "Gris claro", "Marrón Torre Eiffel", "Bronce"],
-    correct: 2
-  },
-  {
-    text: "¿Iba a ser demolida después de la Exposición Universal?",
-    options: ["No, siempre fue permanente", "Sí, tras 20 años", "Sí, tras 10 años", "Nunca se discutió"],
-    correct: 1
-  },
+        // ===== TORRE EIFFEL (10) =====
+        {
+          text: "¿En qué ciudad está la Torre Eiffel?",
+          options: ["Londres", "París", "Roma", "Berlín"],
+          correct: 1
+        },
+        {
+          text: "¿Para qué evento se construyó la Torre Eiffel?",
+          options: [
+            "Juegos Olímpicos",
+            "Exposición Universal de 1889",
+            "Revolución Francesa",
+            "Coronación de Napoleón"
+          ],
+          correct: 1
+        },
+        {
+          text: "¿Quién fue el ingeniero responsable del proyecto?",
+          options: ["Gustave Eiffel", "Victor Hugo", "Le Corbusier", "Claude Monet"],
+          correct: 0
+        },
+        {
+          text: "¿Cuántos metros mide aproximadamente la Torre Eiffel?",
+          options: ["150 m", "220 m", "330 m", "500 m"],
+          correct: 2
+        },
+        {
+          text: "¿En qué año se inauguró la Torre Eiffel?",
+          options: ["1789", "1850", "1889", "1905"],
+          correct: 2
+        },
+        {
+          text: "¿De qué material está hecha principalmente?",
+          options: ["Acero", "Hierro", "Aluminio", "Cemento"],
+          correct: 1
+        },
+        {
+          text: "¿Cuántos niveles visitables tiene la Torre Eiffel?",
+          options: ["1", "2", "3", "4"],
+          correct: 2
+        },
+        {
+          text: "¿Cada cuántos años se repinta aproximadamente?",
+          options: ["5 años", "7 años", "10 años", "15 años"],
+          correct: 1
+        },
+        {
+          text: "¿Qué color tiene oficialmente la Torre Eiffel?",
+          options: ["Negro", "Gris claro", "Marrón Torre Eiffel", "Bronce"],
+          correct: 2
+        },
+        {
+          text: "¿Iba a ser demolida después de la Exposición Universal?",
+          options: ["No, siempre fue permanente", "Sí, tras 20 años", "Sí, tras 10 años", "Nunca se discutió"],
+          correct: 1
+        },
 
-  // ===== BONUS PARÍS (5) =====
-  {
-    text: "¿Qué río atraviesa la ciudad de París?",
-    options: ["Danubio", "Rin", "Sena", "Loira"],
-    correct: 2
-  },
-  {
-    text: "¿Cómo se llama la famosa avenida que conecta el Arco del Triunfo con la Concordia?",
-    options: [
-      "Avenue Montaigne",
-      "Champs-Élysées",
-      "Rue de Rivoli",
-      "Boulevard Haussmann"
-    ],
-    correct: 1
-  },
-  {
-    text: "¿Qué museo fue originalmente un palacio real?",
-    options: ["Museo de Orsay", "Centro Pompidou", "Museo del Louvre", "Petit Palais"],
-    correct: 2
-  },
-  {
-    text: "¿Qué barrio es famoso por la basílica del Sacré-Cœur?",
-    options: ["Le Marais", "Montmartre", "Latin Quarter", "La Défense"],
-    correct: 1
-  },
-  {
-    text: "¿Cuál es el sobrenombre más común de París?",
-    options: [
-      "La Ciudad Dorada",
-      "La Ciudad del Amor",
-      "La Ciudad Luz",
-      "La Ciudad Imperial"
-    ],
-    correct: 2
-  }
+        // ===== BONUS PARÍS (5) =====
+        {
+          text: "¿Qué río atraviesa la ciudad de París?",
+          options: ["Danubio", "Rin", "Sena", "Loira"],
+          correct: 2
+        },
+        {
+          text: "¿Cómo se llama la famosa avenida que conecta el Arco del Triunfo con la Concordia?",
+          options: [
+            "Avenue Montaigne",
+            "Champs-Élysées",
+            "Rue de Rivoli",
+            "Boulevard Haussmann"
+          ],
+          correct: 1
+        },
+        {
+          text: "¿Qué museo fue originalmente un palacio real?",
+          options: ["Museo de Orsay", "Centro Pompidou", "Museo del Louvre", "Petit Palais"],
+          correct: 2
+        },
+        {
+          text: "¿Qué barrio es famoso por la basílica del Sacré-Cœur?",
+          options: ["Le Marais", "Montmartre", "Latin Quarter", "La Défense"],
+          correct: 1
+        },
+        {
+          text: "¿Cuál es el sobrenombre más común de París?",
+          options: ["La Ciudad Dorada", "La Ciudad del Amor", "La Ciudad Luz", "La Ciudad Imperial"],
+          correct: 2
+        }
+      ];
 
-];
       let index = -1;
       let score = 0;
       let started = false;
@@ -219,10 +219,20 @@
       const restartBtn = document.getElementById("restartBtn");
       const scoreBox = document.getElementById("scoreBox");
       const progress = document.getElementById("progress");
+      const sectionLabel = document.getElementById("sectionLabel");
 
       function showQuestion() {
+        // Mostrar rótulo de sección al empezar el BONUS (pregunta 11)
+        if (sectionLabel) {
+          if (index >= 10) {            // 0-9 Eiffel, 10-14 Bonus
+            sectionLabel.style.display = "block";
+          } else {
+            sectionLabel.style.display = "none";
+          }
+        }
+
         const q = questions[index];
-        progress.textContent = `Pregunta ${index + 1} de ${questions.length}`;
+        progress.textContent = Pregunta ${index + 1} de ${questions.length};
         qText.textContent = q.text;
         options.innerHTML = "";
         feedback.textContent = "";
@@ -232,11 +242,6 @@
           const b = document.createElement("button");
           b.textContent = opt;
           b.onclick = () => {
-            // prevenir múltiples clics
-            if (b.disabled) return;
-            // deshabilitar todos los botones de opciones
-            options.querySelectorAll("button").forEach(btn => btn.disabled = true);
-
             if (i === q.correct) {
               score++;
               feedback.textContent = "✅ Correcto";
@@ -250,12 +255,13 @@
       }
 
       function finish() {
+        if (sectionLabel) sectionLabel.style.display = "none";
         progress.textContent = "";
         qText.textContent = "🎉 ¡Trivia completada!";
         options.innerHTML = "";
         feedback.textContent = "";
         scoreBox.style.display = "block";
-        scoreBox.textContent = `Puntaje: ${score} / ${questions.length}`;
+        scoreBox.textContent = Puntaje: ${score} / ${questions.length};
         nextBtn.style.display = "none";
         restartBtn.style.display = "inline-block";
       }
