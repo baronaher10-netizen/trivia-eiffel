@@ -4,248 +4,182 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Trivia Torre Eiffel</title>
+
+  <!-- ICONOS DE LA APP -->
+  <link rel="icon" href="icono-familia.png">
+  <link rel="apple-touch-icon" href="icono-familia.png">
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { box-sizing: border-box; }
     body {
+      margin: 0;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
-      color: #222;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background: #f2f2f2;
       min-height: 100vh;
-      padding: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .app {
-      max-width: 480px;
+      background: #fff;
       width: 100%;
-      background: #ffffff;
-      border-radius: 16px;
+      max-width: 420px;
+      border-radius: 18px;
       padding: 20px;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    }
-    .title {
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
       text-align: center;
-      margin-bottom: 12px;
+    }
+    h1 {
+      margin: 0 0 6px;
       font-size: 1.4rem;
-      font-weight: 700;
     }
     .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
       color: #666;
+      font-size: 0.9rem;
       margin-bottom: 16px;
     }
     .progress {
       font-size: 0.85rem;
-      color: #666;
-      margin-bottom: 8px;
+      color: #555;
+      margin-bottom: 10px;
     }
-    .question-card {
-      margin-bottom: 16px;
-    }
-    .question-text {
+    .question {
       font-size: 1.05rem;
-      margin-bottom: 12px;
       font-weight: 600;
+      margin-bottom: 12px;
     }
-    .options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .option-btn {
-      border: 1px solid #ddd;
+    .options button {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
       border-radius: 999px;
-      padding: 10px 14px;
-      text-align: left;
+      border: 1px solid #ddd;
       background: #fafafa;
       font-size: 0.95rem;
       cursor: pointer;
-      transition: background 0.15s, transform 0.08s, border-color 0.15s;
     }
-    .option-btn:active {
-      transform: scale(0.98);
-    }
-    .option-btn.correct {
-      background: #e3f8e5;
-      border-color: #46b96f;
-    }
-    .option-btn.incorrect {
-      background: #fde4e4;
-      border-color: #e65b5b;
-    }
-    .option-btn.disabled {
-      cursor: default;
-      opacity: 0.9;
+    .options button:hover {
+      background: #eee;
     }
     .feedback {
-      min-height: 20px;
       margin-top: 8px;
+      min-height: 20px;
       font-size: 0.9rem;
     }
-    .feedback.correct {
-      color: #2f8c4c;
-    }
-    .feedback.incorrect {
-      color: #c0392b;
-    }
     .controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
       margin-top: 16px;
-      gap: 8px;
     }
     .btn {
-      border: none;
+      padding: 10px 18px;
       border-radius: 999px;
-      padding: 10px 16px;
-      font-size: 0.95rem;
-      cursor: pointer;
+      border: none;
       background: #222;
       color: #fff;
-      flex-shrink: 0;
+      font-size: 0.95rem;
+      cursor: pointer;
     }
     .btn.secondary {
-      background: #eee;
+      background: #ddd;
       color: #333;
     }
-    .btn:disabled {
-      opacity: 0.5;
-      cursor: default;
-    }
     .score {
-      text-align: center;
-      margin-top: 12px;
-      font-size: 1rem;
-    }
-    .badge {
-      display: inline-block;
-      border-radius: 999px;
-      padding: 4px 10px;
-      font-size: 0.8rem;
-      background: #eee;
-      margin-top: 6px;
+      margin-top: 14px;
+      font-weight: 600;
     }
   </style>
 </head>
+
 <body>
   <div class="app">
-    <div class="title">Trivia Torre Eiffel</div>
+    <h1>Trivia Torre Eiffel</h1>
     <div class="subtitle">¿Cuánto sabés del ícono de París?</div>
 
     <div class="progress" id="progress"></div>
+    <div class="question" id="questionText">Tocá “Comenzar” para iniciar</div>
 
-    <div class="question-card">
-      <div class="question-text" id="questionText"></div>
-      <div class="options" id="optionsContainer"></div>
-      <div class="feedback" id="feedback"></div>
-    </div>
+    <div class="options" id="optionsContainer"></div>
+    <div class="feedback" id="feedback"></div>
 
     <div class="controls">
-      <button class="btn secondary" id="restartBtn" style="display:none;">Reiniciar</button>
       <button class="btn" id="nextBtn">Comenzar</button>
+      <button class="btn secondary" id="restartBtn" style="display:none;">Reiniciar</button>
     </div>
 
     <div class="score" id="scoreBox" style="display:none;"></div>
   </div>
 
   <script>
-document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
 
-  const questions = [
-    { text: "¿En qué ciudad está la Torre Eiffel?", options: ["Londres","París","Roma","Berlín"], correctIndex: 1 },
-    { text: "¿Para qué evento se construyó la Torre Eiffel?", options: ["Juegos Olímpicos","Exposición Universal de 1889","Revolución Francesa","Coronación de Napoleón"], correctIndex: 1 },
-    { text: "¿Quién fue el responsable principal del proyecto?", options: ["Leonardo Da Vinci","Gustave Eiffel","Víctor Hugo","Claude Monet"], correctIndex: 1 },
-  ];
+      const questions = [
+        { text: "¿En qué ciudad está la Torre Eiffel?", options: ["Londres","París","Roma","Berlín"], correct: 1 },
+        { text: "¿Para qué evento se construyó?", options: ["Juegos Olímpicos","Exposición Universal de 1889","Revolución Francesa","Coronación de Napoleón"], correct: 1 },
+        { text: "¿Cuántos metros mide aproximadamente?", options: ["100 m","220 m","330 m","500 m"], correct: 2 },
+        { text: "¿Iba a ser permanente?", options: ["Sí","No, solo 20 años","Nunca se planeó","Depende del clima"], correct: 1 }
+      ];
 
-  const questionText = document.getElementById("questionText");
-  const optionsContainer = document.getElementById("optionsContainer");
-  const feedback = document.getElementById("feedback");
-  const nextBtn = document.getElementById("nextBtn");
-  const restartBtn = document.getElementById("restartBtn");
-  const scoreBox = document.getElementById("scoreBox");
-  const progress = document.getElementById("progress");
+      let index = -1;
+      let score = 0;
+      let started = false;
 
-  if (!questionText || !optionsContainer || !nextBtn) {
-    alert("Faltan elementos en el HTML (IDs). Revisa questionText / optionsContainer / nextBtn.");
-    return;
-  }
+      const qText = document.getElementById("questionText");
+      const options = document.getElementById("optionsContainer");
+      const feedback = document.getElementById("feedback");
+      const nextBtn = document.getElementById("nextBtn");
+      const restartBtn = document.getElementById("restartBtn");
+      const scoreBox = document.getElementById("scoreBox");
+      const progress = document.getElementById("progress");
 
-  let currentIndex = -1;
-  let score = 0;
-  let started = false;
+      function showQuestion() {
+        const q = questions[index];
+        progress.textContent = Pregunta ${index + 1} de ${questions.length};
+        qText.textContent = q.text;
+        options.innerHTML = "";
+        feedback.textContent = "";
+        nextBtn.disabled = true;
 
-  function renderStart() {
-    if (progress) progress.textContent = "";
-    questionText.textContent = "Tocá “Comenzar” para iniciar la trivia.";
-    optionsContainer.innerHTML = "";
-    if (feedback) feedback.textContent = "";
-    nextBtn.disabled = false;
-    nextBtn.textContent = "Comenzar";
-    if (restartBtn) restartBtn.style.display = "none";
-    if (scoreBox) scoreBox.style.display = "none";
-  }
+        q.options.forEach((opt, i) => {
+          const b = document.createElement("button");
+          b.textContent = opt;
+          b.onclick = () => {
+            if (i === q.correct) {
+              score++;
+              feedback.textContent = "✅ Correcto";
+            } else {
+              feedback.textContent = "❌ Incorrecto";
+            }
+            nextBtn.disabled = false;
+          };
+          options.appendChild(b);
+        });
+      }
 
-  function renderQuestion() {
-    const q = questions[currentIndex];
-    if (progress) progress.textContent = Pregunta ${currentIndex + 1} de ${questions.length};
-    questionText.textContent = q.text;
-    optionsContainer.innerHTML = "";
-    if (feedback) feedback.textContent = "";
-    nextBtn.disabled = true;
-    nextBtn.textContent = "Siguiente";
+      function finish() {
+        progress.textContent = "";
+        qText.textContent = "🎉 ¡Trivia completada!";
+        options.innerHTML = "";
+        feedback.textContent = "";
+        scoreBox.style.display = "block";
+        scoreBox.textContent = Puntaje: ${score} / ${questions.length};
+        nextBtn.style.display = "none";
+        restartBtn.style.display = "inline-block";
+      }
 
-    q.options.forEach((opt, idx) => {
-      const btn = document.createElement("button");
-      btn.className = "option-btn";
-      btn.textContent = String.fromCharCode(65 + idx) + ") " + opt;
-      btn.onclick = () => {
-        if (idx === q.correctIndex) {
-          score++;
-          if (feedback) feedback.textContent = "✅ ¡Correcto!";
-        } else {
-          if (feedback) feedback.textContent = "❌ Incorrecto";
+      nextBtn.onclick = () => {
+        if (!started) {
+          started = true;
+          index = 0;
+          nextBtn.textContent = "Siguiente";
+          showQuestion();
+          return;
         }
-        nextBtn.disabled = false;
+        index++;
+        if (index >= questions.length) finish();
+        else showQuestion();
       };
-      optionsContainer.appendChild(btn);
-    });
-  }
 
-  function renderFinal() {
-    if (progress) progress.textContent = "";
-    questionText.textContent = "🎉 ¡Trivia completada!";
-    optionsContainer.innerHTML = "";
-    if (feedback) feedback.textContent = "";
-
-    if (scoreBox) {
-      scoreBox.style.display = "block";
-      scoreBox.innerHTML = Puntaje: <strong>${score}</strong> / <strong>${questions.length}</strong>;
-    }
-
-    nextBtn.style.display = "none";
-    if (restartBtn) {
-      restartBtn.style.display = "inline-block";
       restartBtn.onclick = () => location.reload();
-    }
-  }
-
-  nextBtn.onclick = () => {
-    if (!started) {
-      started = true;
-      currentIndex = 0;
-      renderQuestion();
-      return;
-    }
-    currentIndex++;
-    if (currentIndex >= questions.length) renderFinal();
-    else renderQuestion();
-  };
-
-  renderStart();
-});
-</script>
+    });
+  </script>
 </body>
 </html>
