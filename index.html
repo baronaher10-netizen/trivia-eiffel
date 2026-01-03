@@ -132,7 +132,7 @@
 
       function showQuestion() {
         const q = questions[index];
-        progress.textContent = Pregunta ${index + 1} de ${questions.length};
+        progress.textContent = `Pregunta ${index + 1} de ${questions.length}`;
         qText.textContent = q.text;
         options.innerHTML = "";
         feedback.textContent = "";
@@ -142,6 +142,11 @@
           const b = document.createElement("button");
           b.textContent = opt;
           b.onclick = () => {
+            // prevenir múltiples clics
+            if (b.disabled) return;
+            // deshabilitar todos los botones de opciones
+            options.querySelectorAll("button").forEach(btn => btn.disabled = true);
+
             if (i === q.correct) {
               score++;
               feedback.textContent = "✅ Correcto";
@@ -160,7 +165,7 @@
         options.innerHTML = "";
         feedback.textContent = "";
         scoreBox.style.display = "block";
-        scoreBox.textContent = Puntaje: ${score} / ${questions.length};
+        scoreBox.textContent = `Puntaje: ${score} / ${questions.length}`;
         nextBtn.style.display = "none";
         restartBtn.style.display = "inline-block";
       }
