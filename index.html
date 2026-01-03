@@ -125,7 +125,9 @@
   <div class="app">
     <h1>Trivia Torre Eiffel</h1>
     <div class="subtitle">¿Cuánto sabés del ícono de París?</div>
-
+<div id="sectionLabel" style="display:none; margin-bottom:10px; font-weight:700; color:#444;">
+  ⭐ BONUS PARÍS (5 preguntas)
+</div>
     <div class="progress" id="progress"></div>
     <div class="question" id="questionText">Tocá “Comenzar” para iniciar</div>
 
@@ -251,9 +253,11 @@
       const restartBtn = document.getElementById("restartBtn");
       const scoreBox = document.getElementById("scoreBox");
       const progress = document.getElementById("progress");
+      const sectionLabel = document.getElementById("sectionLabel");
       const appEl = document.querySelector(".app");
       
       function showQuestion() {
+        const sectionLabel = document.getElementById("sectionLabel");
         const q = questions[index];
         if (appEl) appEl.classList.toggle("bonus", index >= 10);
         progress.textContent = `Pregunta ${index + 1} de ${questions.length}`;
