@@ -112,12 +112,102 @@
     document.addEventListener("DOMContentLoaded", () => {
 
       const questions = [
-        { text: "¿En qué ciudad está la Torre Eiffel?", options: ["Londres","París","Roma","Berlín"], correct: 1 },
-        { text: "¿Para qué evento se construyó?", options: ["Juegos Olímpicos","Exposición Universal de 1889","Revolución Francesa","Coronación de Napoleón"], correct: 1 },
-        { text: "¿Cuántos metros mide aproximadamente?", options: ["100 m","220 m","330 m","500 m"], correct: 2 },
-        { text: "¿Iba a ser permanente?", options: ["Sí","No, solo 20 años","Nunca se planeó","Depende del clima"], correct: 1 }
-      ];
 
+  // ===== TORRE EIFFEL (10) =====
+  {
+    text: "¿En qué ciudad está la Torre Eiffel?",
+    options: ["Londres", "París", "Roma", "Berlín"],
+    correct: 1
+  },
+  {
+    text: "¿Para qué evento se construyó la Torre Eiffel?",
+    options: [
+      "Juegos Olímpicos",
+      "Exposición Universal de 1889",
+      "Revolución Francesa",
+      "Coronación de Napoleón"
+    ],
+    correct: 1
+  },
+  {
+    text: "¿Quién fue el ingeniero responsable del proyecto?",
+    options: ["Gustave Eiffel", "Victor Hugo", "Le Corbusier", "Claude Monet"],
+    correct: 0
+  },
+  {
+    text: "¿Cuántos metros mide aproximadamente la Torre Eiffel?",
+    options: ["150 m", "220 m", "330 m", "500 m"],
+    correct: 2
+  },
+  {
+    text: "¿En qué año se inauguró la Torre Eiffel?",
+    options: ["1789", "1850", "1889", "1905"],
+    correct: 2
+  },
+  {
+    text: "¿De qué material está hecha principalmente?",
+    options: ["Acero", "Hierro", "Aluminio", "Cemento"],
+    correct: 1
+  },
+  {
+    text: "¿Cuántos niveles visitables tiene la Torre Eiffel?",
+    options: ["1", "2", "3", "4"],
+    correct: 2
+  },
+  {
+    text: "¿Cada cuántos años se repinta aproximadamente?",
+    options: ["5 años", "7 años", "10 años", "15 años"],
+    correct: 1
+  },
+  {
+    text: "¿Qué color tiene oficialmente la Torre Eiffel?",
+    options: ["Negro", "Gris claro", "Marrón Torre Eiffel", "Bronce"],
+    correct: 2
+  },
+  {
+    text: "¿Iba a ser demolida después de la Exposición Universal?",
+    options: ["No, siempre fue permanente", "Sí, tras 20 años", "Sí, tras 10 años", "Nunca se discutió"],
+    correct: 1
+  },
+
+  // ===== BONUS PARÍS (5) =====
+  {
+    text: "¿Qué río atraviesa la ciudad de París?",
+    options: ["Danubio", "Rin", "Sena", "Loira"],
+    correct: 2
+  },
+  {
+    text: "¿Cómo se llama la famosa avenida que conecta el Arco del Triunfo con la Concordia?",
+    options: [
+      "Avenue Montaigne",
+      "Champs-Élysées",
+      "Rue de Rivoli",
+      "Boulevard Haussmann"
+    ],
+    correct: 1
+  },
+  {
+    text: "¿Qué museo fue originalmente un palacio real?",
+    options: ["Museo de Orsay", "Centro Pompidou", "Museo del Louvre", "Petit Palais"],
+    correct: 2
+  },
+  {
+    text: "¿Qué barrio es famoso por la basílica del Sacré-Cœur?",
+    options: ["Le Marais", "Montmartre", "Latin Quarter", "La Défense"],
+    correct: 1
+  },
+  {
+    text: "¿Cuál es el sobrenombre más común de París?",
+    options: [
+      "La Ciudad Dorada",
+      "La Ciudad del Amor",
+      "La Ciudad Luz",
+      "La Ciudad Imperial"
+    ],
+    correct: 2
+  }
+
+];
       let index = -1;
       let score = 0;
       let started = false;
